@@ -9,31 +9,35 @@ export class QuestionService {
   private headers: HttpHeaders;
   private URL: string = "http://localhost:14789/api/questions";
 
-  constructor(private http: HttpClient ) {
-    this.headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
-   }
+  constructor(private http: HttpClient) {
+    this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+  }
 
-   getQuestions(){
+  getQuestions() {
     return this.http.get<Question[]>(this.URL);
-   }
+  }
+
+  getQuestionsByCategoryId(id: number) {
+    return this.http.get<Question[]>(this.URL + "/GetQuestionsByCategoryId" + '/' + id);
+  }
 
   createQuestion(question: Question) {
     var result = JSON.stringify(question);
     return this.http.post(this.URL, result, { headers: this.headers });
   }
 
-  updateQuestion(id: number, question: Question){
+  updateQuestion(id: number, question: Question) {
     var result = JSON.stringify(question);
-    return this.http.put(this.URL + '/' + id, result, {headers: this.headers});
+    return this.http.put(this.URL + '/' + id, result, { headers: this.headers });
   }
 
-  deleteQuestion(id: number){
-    return this.http.delete(this.URL + '/'+ id);
+  deleteQuestion(id: number) {
+    return this.http.delete(this.URL + '/' + id);
   }
 
-  getQuestionById(id : number){
-    return this.http.get<Question>(this.URL + '/' + id); 
- }
+  getQuestionById(id: number) {
+    return this.http.get<Question>(this.URL + '/GetQuestionById/' + id);
+  }
 }
 
 

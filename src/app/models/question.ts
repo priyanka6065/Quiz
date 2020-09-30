@@ -1,3 +1,4 @@
+import { Answer } from './answer';
 import { Category } from './category';
 
 export class Question {
@@ -6,4 +7,5 @@ export class Question {
     Point: number;
     CategoryId: number;
     Category: Category;
+    Answers: Answer[] = [];
 }

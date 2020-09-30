@@ -10,30 +10,35 @@ export class AnswerService {
   private URL: string = "http://localhost:14789/api/answers";
 
   constructor(private http: HttpClient) {
-    this.headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
-   }
+    this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+  }
 
-   getAnswers (){
-     return this.http.get<Answer[]>(this.URL);
-   }
+  getAnswers() {
+    return this.http.get<Answer[]>(this.URL);
+  }
 
-   createAnswer(answer: Answer) {
+  createAnswer(answer: Answer) {
     var result = JSON.stringify(answer);
     return this.http.post(this.URL, result, { headers: this.headers });
   }
 
-  updateAnswer(id: number, answer: Answer){
+  updateAnswer(id: number, answer: Answer) {
     var result = JSON.stringify(answer);
-    return this.http.put(this.URL + '/' + id, result, {headers: this.headers});
+    return this.http.put(this.URL + '/' + id, result, { headers: this.headers });
   }
 
-  deleteAnswer(id: number){
-    return this.http.delete(this.URL + '/'+ id);
+  deleteAnswer(id: number) {
+    return this.http.delete(this.URL + '/' + id);
   }
 
-  getAnswerById(id : number){
-    return this.http.get<Answer>(this.URL + '/' + id); 
- }
+  getAnswerById(id: number) {
+    return this.http.get<Answer>(this.URL + '/' + id);
+  }
+
+  getAnswersByQuestionId(id: number) {
+    return this.http.get<Answer>(this.URL + "/getAnswersByQuestionId" + '/' + id);
+  }
+
 }
 
 

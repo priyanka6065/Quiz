@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Answer } from '../../models/answer';
 import { AnswerService } from '../../services/answer.service';
+import { QuestionService } from '../../services/question.service';
+import { Question } from '../../models/question';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,9 +12,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AnswerDetailComponent implements OnInit {
   public answer: Answer = <any>{};
+  public question: Question = null;
   public AnswerId: number = 0;
+  public QuestionId: number = 0;
 
-  constructor(private service: AnswerService, private activatedRouter: ActivatedRoute, private router: Router) { }
+
+  constructor(private questionService: QuestionService, private service: AnswerService, private activatedRouter: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.activatedRouter.params.subscribe(params => {
@@ -20,6 +25,12 @@ export class AnswerDetailComponent implements OnInit {
       {
         this.AnswerId = params['id'];
         this.onEdit(this.AnswerId);
+      }
+      if(params['questionid'] != null)
+      {
+        this.QuestionId = params['questionid'];
+        //this.onEdit(this.AnswerId);
+        this.getQuestionById(this.QuestionId);
       }
     })
   }
@@ -31,9 +42,16 @@ export class AnswerDetailComponent implements OnInit {
     })
   }
 
+  getQuestionById(id: number) {
+    this.questionService.getQuestionById(id).subscribe(data => {
+      this.question = data;
+    })
+  }
+
   onCreate() {
+    this.answer.QuestionId = this.QuestionId;
     this.service.createAnswer(this.answer).subscribe(data => {
-      this.router.navigate(['answers']);
+      this.router.navigate(['answers/' + this.QuestionId]);
     })
   }
 

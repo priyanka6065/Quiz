@@ -41,7 +41,8 @@ export class UserComponent implements OnInit {
       Email: '',
       PassWord: '',
       UserName: '',
-      UserId: 0
+      UserId: 0,
+      Roll: ''
     };
   }
 

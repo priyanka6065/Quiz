@@ -17,6 +17,8 @@
           <td>{{ question.Category.CategoryName }}</td>
           <td>{{ question.Point }}</td>          
           <td>
+            <a class="btn btn-sm btn-outline-primary mr-3" routerLink="../answers/{{question.QuestionId}}">
+              <i class="fas fa-search-plus"></i></a>
             <a class="btn btn-sm btn-outline-primary mr-3" routerLink="question-detail/{{question.QuestionId}}">
               <i class="fas fa-edit"></i></a>
             <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete(question.QuestionId)">

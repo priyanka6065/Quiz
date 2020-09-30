@@ -1,3 +1,7 @@
+<div class="alert alert-primary mt-3" >
+  <b>{{question.QueDetail}}</b>
+</div>
+
 <div class="col-lg-6 mt-3">
     <div class="card-header bg-primary">
       <h3>Answer Detail</h3>
@@ -5,10 +9,20 @@
     <div class="card p-2">
       <form>
         <div class="form-group col-12">
+          <label>Answer Option</label>
+          <input class="form-control " name="AnsOptions" placeholder="Answer Option" required="" type="text"
+            ng-reflect-required="" ng-reflect-name="AnsOptions" [(ngModel)]="answer.AnsOptions">
+        </div>
+        <div class="form-group col-12">
           <label>Correct Answer</label>
           <input class="form-control " name="IsCorrect" placeholder="Correct Answer" required="" type="text"
             ng-reflect-required="" ng-reflect-name="IsCorrect" [(ngModel)]="answer.IsCorrect">
         </div>
+        <!-- <div class="form-group col-12">
+          <label>Question</label>
+          <input class="form-control " name="QuestionId" placeholder="Question" required="" type="text"
+            ng-reflect-required="" ng-reflect-name="QuestionId" [(ngModel)]="answer.QuestionId">
+        </div> -->
         <div class="col-12">
           <span *ngIf="AnswerId==0">
             <button class="btn btn-primary" type="submit" (click)="onCreate()">Add</button>
