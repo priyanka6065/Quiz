@@ -4,55 +4,99 @@ import { Answer } from '../models/answer';
 import { Question } from '../models/question';
 import { QuestionService } from '../services/question.service';
 import { UserQuizzes } from '../models/user-quizzes';
-
+import { QuizAnswers } from '../models/quiz-answers';
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.css']
+  styleUrls: ['./quiz.component.css'],
 })
 export class QuizComponent implements OnInit {
   public questions: Question[] = [];
+  public quizAnswers: QuizAnswers[] = [];
   public userQuizzes: UserQuizzes[] = [];
   public answers: Answer[] = [];
   public categoryId: number = 0;
   public no: number = 0;
-  public currentQuestion: Question = <Question>{};
+  public currentQuestion: QuizAnswers = <QuizAnswers>{};
+  public selectedAnswerId: string = '0';
+  public selectedQuestionId: number = 0;
 
-  constructor(private activatedRouter: ActivatedRoute, private router: Router, private questionService: QuestionService) { }
+  constructor(
+    private activatedRouter: ActivatedRoute,
+    private router: Router,
+    private questionService: QuestionService
+  ) {}
 
   ngOnInit(): void {
-    this.activatedRouter.params.subscribe(params => {
+    this.activatedRouter.params.subscribe((params) => {
       if (params['id'] != null) {
         this.categoryId = params['id'];
         this.getQuestionsByCategoryId(this.categoryId);
-        this.onNext();
+        this.getNextData();
       }
-    })
+    });
   }
 
-
   getQuestionsByCategoryId(id: number) {
-    this.questionService.getQuestionsByCategoryId(id).subscribe(data => {
+    this.questionService.getQuestionsByCategoryId(id).subscribe((data) => {
       this.questions = data;
-      console.log(data);
-      localStorage.setItem('questions-list', JSON.stringify(this.questions));
-    })
+      this.quizAnswers = data as QuizAnswers[];
+      this.quizAnswers.forEach((question) => {
+        question.selectedAnswer = 0;
+      });
+      //console.log(this.quizAnswers);
+      //localStorage.setItem('questions-list', JSON.stringify(this.questions));
+      localStorage.setItem('questions-list', JSON.stringify(this.quizAnswers));
+    });
+  }
+
+  onItemChange(ansId, queId) {
+    this.selectedAnswerId = ansId;
+    this.selectedQuestionId = queId;
+  }
+
+  getNextData() {
+    this.no = this.no + 1;
+    this.quizAnswers = JSON.parse(localStorage.getItem('questions-list'));
+    this.currentQuestion = this.quizAnswers[this.no - 1];
+    if (this.quizAnswers[this.no - 1].selectedAnswer != 0) {
+      this.selectedAnswerId = this.quizAnswers[this.no - 1].selectedAnswer.toString();
+    }
+    this.answers = this.currentQuestion.Answers;
+  }
+
+  getPreviousData() {
+    this.no = this.no - 1;
+    this.quizAnswers = JSON.parse(localStorage.getItem('questions-list'));
+    this.currentQuestion = this.quizAnswers[this.no - 1];
+    if (this.quizAnswers[this.no - 1].selectedAnswer != 0) {
+      this.selectedAnswerId = this.quizAnswers[this.no - 1].selectedAnswer.toString();
+    }
+    this.answers = this.currentQuestion.Answers;
   }
 
   onNext() {
-    this.no = this.no + 1;
-    this.questions = JSON.parse(localStorage.getItem('questions-list'));
-    this.currentQuestion = this.questions[this.no - 1];
-    this.answers = this.currentQuestion.Answers;
-    localStorage.setItem('questions-list', JSON.stringify(this.questions));
-    this.userQuizzes[0].QuestionId = this.currentQuestion.QuestionId;    
+    this.quizAnswers[this.no - 1].selectedAnswer = Number(this.selectedAnswerId);
+    this.selectedAnswerId = '0';
+    localStorage.setItem('questions-list', JSON.stringify(this.quizAnswers));
+    this.getNextData();
+    console.log(this.quizAnswers);
   }
 
   onPrevious() {
-    this.no = this.no - 1;
-    this.questions = JSON.parse(localStorage.getItem('questions-list'));
-    this.currentQuestion = this.questions[this.no - 1];
-    this.answers = this.currentQuestion.Answers;
+    this.quizAnswers[this.no - 1].selectedAnswer = Number(this.selectedAnswerId);
+    this.selectedAnswerId = '0';
+    localStorage.setItem('questions-list', JSON.stringify(this.quizAnswers));
+    this.getPreviousData();
+    console.log(this.quizAnswers);
+  }
+
+  onSubmit() {
+    this.quizAnswers[this.no - 1].selectedAnswer = Number(this.selectedAnswerId);
+    this.selectedAnswerId = '0';
+    localStorage.setItem('questions-list', JSON.stringify(this.quizAnswers));
+
+    console.log('data submitted');
   }
 }

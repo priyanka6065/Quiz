@@ -19,8 +19,10 @@ export class LoginComponent implements OnInit {
   onLogin() {
     this.service.login(this.user).subscribe(data => {
       this.user = data as User;
-      
-      if (this.user.Roll == 'admin')
+
+      localStorage.setItem('userToken', this.user.Roll);
+
+      if (this.user.Roll == 'admin') 
         this.router.navigate(['categories']);
       else
         this.router.navigate(['quizsettings']);

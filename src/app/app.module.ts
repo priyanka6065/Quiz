@@ -27,6 +27,8 @@ import { SiteLayoutComponent } from './_layout/site-layout/site-layout.component
 import { RegisterComponent } from './user/register/register.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { QuizsettingsComponent } from './quiz/quizsettings/quizsettings.component';
+import { ResultComponent } from './result/result.component';
+
 //https://stackblitz.com/edit/angular-multi-layout-example?file=app%2Fapp.routing.ts
 const appRoutes: Routes = [
   {
@@ -36,8 +38,9 @@ const appRoutes: Routes = [
       { path: '', component: LoginComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      { path: 'quiz/:id', component: QuizComponent},
-      { path: 'quizsettings', component: QuizsettingsComponent} 
+      { path: 'quiz/:id', component: QuizComponent },
+      { path: 'quizsettings', component: QuizsettingsComponent },
+      { path: 'result', component: ResultComponent }
     ]
   },
   {
@@ -77,7 +80,8 @@ const appRoutes: Routes = [
     SiteLayoutComponent,
     RegisterComponent,
     QuizComponent,
-    QuizsettingsComponent
+    QuizsettingsComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule,

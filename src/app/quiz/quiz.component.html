@@ -1,3 +1,4 @@
+<!-- https://www.codeproject.com/Articles/1167451/Quiz-Application-in-Angular -->
 <div class="container mt-5">
     <div class="d-flex justify-content-center row">
         <div class="col-md-10 col-lg-10">
@@ -13,8 +14,10 @@
                         <h5 class="mt-1 ml-2">{{currentQuestion.QueDetail}}</h5>
                     </div>
                     <div class="ans ml-2" *ngFor="let answer of answers">
-                        <label class="radio"> 
-                            <input type="radio" name="rdoAnswer" value="{{answer.AnswerId}}" ngModel>
+                        <label class="radio">
+                            <input type="radio" name="rdoAnswer" value="{{answer.AnswerId}}"
+                                [(ngModel)]="selectedAnswerId"
+                                (change)="onItemChange(answer.AnswerId, answer.QuestionId)">
                             <span class="ml-3">{{answer.AnsOptions}}</span>
                         </label>
                     </div>
@@ -27,8 +30,7 @@
                         *ngIf="no<questions.length" (click)="onNext()" type="button">Next<i
                             class="fa fa-angle-right ml-2"></i></button>
                     <button class="btn btn-primary border-success align-items-center btn-success"
-                        *ngIf="no==questions.length"  type="button">Submit<i
-                            class="fa fa-angle-right ml-2"></i></button>
+                        *ngIf="no==questions.length" (click)="onSubmit()" type="button" routerLink="../../result">Submit<i class="fa fa-angle-right ml-2"></i></button>
                 </div>
             </div>
         </div>
