@@ -21,6 +21,8 @@ export class LoginComponent implements OnInit {
       this.user = data as User;
 
       localStorage.setItem('userToken', this.user.Roll);
+      localStorage.setItem('userId', this.user.UserId.toString());
+      localStorage.setItem('userName', this.user.UserName);
 
       if (this.user.Roll == 'admin') 
         this.router.navigate(['categories']);

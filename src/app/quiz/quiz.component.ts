@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Answer } from '../models/answer';
 import { Question } from '../models/question';
+import { UserQuizService } from '../services/user-quiz.service';
 import { QuestionService } from '../services/question.service';
-import { UserQuizzes } from '../models/user-quizzes';
 import { QuizAnswers } from '../models/quiz-answers';
+import { UserQuiz } from '../models/user-quiz';
 
 @Component({
   selector: 'app-quiz',
@@ -14,7 +15,6 @@ import { QuizAnswers } from '../models/quiz-answers';
 export class QuizComponent implements OnInit {
   public questions: Question[] = [];
   public quizAnswers: QuizAnswers[] = [];
-  public userQuizzes: UserQuizzes[] = [];
   public answers: Answer[] = [];
   public categoryId: number = 0;
   public no: number = 0;
@@ -22,11 +22,14 @@ export class QuizComponent implements OnInit {
   public selectedAnswerId: string = '0';
   public selectedQuestionId: number = 0;
 
+  public userQuizzes: UserQuiz[] = [];
+
   constructor(
     private activatedRouter: ActivatedRoute,
     private router: Router,
-    private questionService: QuestionService
-  ) {}
+    private questionService: QuestionService,
+    private userquizService: UserQuizService
+  ) { }
 
   ngOnInit(): void {
     this.activatedRouter.params.subscribe((params) => {
@@ -96,7 +99,25 @@ export class QuizComponent implements OnInit {
     this.quizAnswers[this.no - 1].selectedAnswer = Number(this.selectedAnswerId);
     this.selectedAnswerId = '0';
     localStorage.setItem('questions-list', JSON.stringify(this.quizAnswers));
+    console.log(this.quizAnswers);
 
-    console.log('data submitted');
+    console.log('-------------------');
+    for (let i = 0; i < this.quizAnswers.length; i++) {
+
+      this.userQuizzes[i] = {
+        Id: 0,
+        QuizId: 7,
+        UserId: 10,
+        QuestionId: this.quizAnswers[i].QuestionId,
+        AnswerId: this.quizAnswers[i].selectedAnswer
+      }
+      console.log(this.quizAnswers[i]);
+    }
+
+    this.userquizService.createUserQuiz(this.userQuizzes).subscribe(data => {
+      this.router.navigate(['result']);
+    })
+
+    console.log(this.userQuizzes);
   }
 }

@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CategoryService } from './services/category.service';
 import { QuestionService } from './services/question.service';
 import { AnswerService } from './services/answer.service';
+import { UserQuizService } from './services/user-quiz.service';
 import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -93,7 +94,8 @@ const appRoutes: Routes = [
     CategoryService,
     QuestionService,
     AnswerService,
-    UserService
+    UserService,
+    UserQuizService
   ],
   bootstrap: [AppComponent]
 })
